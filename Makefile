@@ -10,7 +10,7 @@ run:
 
 # ----- git
 ifeq ($(OS),Windows_NT)
-		SHELL := pwsh.exe
+		SHELL := powershell.exe
 else
 		SHELL := bash
 endif
