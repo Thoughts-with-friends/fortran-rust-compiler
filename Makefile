@@ -1,5 +1,8 @@
-default: run
+default: test
 
-run:
+test:
 		cargo build --verbose
 		cargo test --verbose
+
+run:
+		cargo run
