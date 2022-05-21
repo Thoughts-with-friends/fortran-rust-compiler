@@ -16,10 +16,12 @@ else
 endif
 current_branch := $(shell $(SHELL) -c 'git rev-parse --abbrev-ref HEAD')
 
-g-mk:
+# create branch
+br:
 		python3 "./scripts/create-branch.py"
 
-g-pull:
+# udate main repository
+update:
 		git stash --include-untracked
 		git checkout main
 		git pull
@@ -27,5 +29,6 @@ g-pull:
 		git checkout $(current_branch)
 		git stash pop
 
-g-pr:
+# crete pull request
+git-pr:
 		gh pr create -w $(current_branch)
