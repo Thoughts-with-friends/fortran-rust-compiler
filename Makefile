@@ -16,9 +16,9 @@ else
 endif
 current_branch := $(shell $(SHELL) -c 'git rev-parse --abbrev-ref HEAD')
 
-# create branch
+# create branch (python3 only)
 br:
-		python3 "./scripts/create-branch.py"
+		python ./scripts/create-branch.py
 
 # udate main repository
 update:
