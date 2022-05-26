@@ -1,5 +1,6 @@
 use regex::Regex;
 
+/// reference: https://www.sigbus.info/compilerbook#ステップ2加減算のできるコンパイラの作成
 pub fn parse(text: &str) {
     let mut p = text.chars().peekable();
 
