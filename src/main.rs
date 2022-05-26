@@ -1,3 +1,4 @@
+use fortran_rust_compiler::if_comp::*;
 fn main() {
-    println!("Hello, world!");
+    compile_if();
 }

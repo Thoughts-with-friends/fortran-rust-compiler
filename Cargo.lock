@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "fortran-rust-compiler"
+name = "fortran_rust_compiler"
 version = "0.1.0"

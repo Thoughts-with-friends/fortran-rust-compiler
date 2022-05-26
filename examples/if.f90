@@ -5,7 +5,7 @@ program main
   a = "A"
   if ( a == "A" )then
     print*, a
-  end if
+  endif
 
-  stop
+  stop 
 end program
