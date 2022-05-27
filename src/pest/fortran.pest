@@ -1,0 +1,81 @@
+new_line = _{ "\n" | "\r\n" }
+WHITESPACE = _{ " " }
+
+comment = _{ "!" ~ (!new_line ~ ANY)* }
+ignore_keyword = _{ "stop" | "implicit none" }
+// --------------------------------------------------------------
+
+char = _{ ASCII_ALPHA }
+string = _{ char+ }
+
+// --------------------------------------------------------------
+
+identifier = { (!end_program_keyword ~ string) }
+
+// --------------------------------------------------------------
+
+num = @{ int ~ ("." ~ ASCII_DIGIT*)? ~ (^"e" ~ int)? }
+    int = { ("+" | "-")? ~ ASCII_DIGIT+ }
+
+operation = _{ add | subtract | multiply | divide | power }
+    add      = { "+" }
+    subtract = { "-" }
+    multiply = { "*" }
+    divide   = { "/" }
+    power    = { "^" }
+
+expr = _{ term ~ (operation ~ term)* }
+term = _{ identifier | num | "(" ~ expr ~ ")" }
+
+// --------------------------------------------------------------
+
+range_operation = _{ "," }
+range_expr = { term ~ (range_operation ~ WHITESPACE* ~ term)* }
+
+// --------------------------------------------------------------
+variable_type = { "real" | "integer" | "character" }
+declare_variable = { variable_type ~ "::" ~ identifier ~ ("," ~ identifier)* }
+
+assign_to_variable = { identifier ~ WHITESPACE* ~ "=" ~
+                        expr ~ new_line
+                    }
+
+// --------------------------------------------------------------
+
+do_keyword = { "do" }
+do_variable = { identifier }
+do_loop_condition = _{ range_expr }
+do_loop_body = {(!end_do_keyword ~ assign_to_variable) }
+end_do_keyword = { "end do" }
+
+do_statement = { do_keyword ~ do_variable ~ "=" ~ do_loop_condition ~ new_line
+                  ~ do_loop_body* ~ end_do_keyword
+              }
+
+// --------------------------------------------------------------
+
+func_name = { identifier }
+func_args = { identifier ~ ("," ~ identifier)* }
+call_function = { func_name ~ "*, " ~ func_args* }
+
+// --------------------------------------------------------------
+non_nest_new_line = { "\n" | "\r\n" }
+statement = _{ ignore_keyword | declare_variable | assign_to_variable |
+              call_function | do_statement | expr | non_nest_new_line
+            }
+
+// --------------------------------------------------------------
+program_keyword = { "program" }
+program_name = { identifier }
+end_program_keyword = { "end program" }
+
+program = _{ program_keyword ~ program_name ~ new_line ~
+            (statement)* ~
+            end_program_keyword ~ new_line?
+          }
+
+source = _{
+    SOI ~
+    program ~
+    EOI
+}

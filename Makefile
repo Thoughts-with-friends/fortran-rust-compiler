@@ -1,11 +1,11 @@
-default: test
+default: run
 
 build:
-		cargo build --verbose
+		cargo build
 test: build
-		cargo test --verbose
+		cargo test
 run:
-		cargo run
+		cargo run > dist/output.rs
 
 
 # ----- git
